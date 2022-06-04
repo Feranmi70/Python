@@ -1,0 +1,61 @@
+import schedule
+import time
+
+def finaltest():
+    from turtle import title
+    from twilio.rest import Client
+
+    import pandas as pd
+    from Google import Create_Service, convert_to_RFC_datetime
+
+    CLIENT_SECRET_FILE = 'client_secret_file.json'
+    API_NAME = 'tasks'
+    API_VERSION = 'v1'
+    SCOPES = ['https://www.googleapis.com/auth/tasks']
+
+    service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES) 
+
+    mainTasklistId = b
+
+    '''
+    List Method
+    '''
+    response = service.tasks().list(
+        tasklist=mainTasklistId,
+        maxResults=100,
+        showCompleted=False
+    ).execute()
+    lstItems= response.get('items')
+    nextPageToken=response.get('nextPageToken')
+    while nextPageToken:
+        response=service.tasks().list(
+        tasklist=mainTasklistId,
+        maxResults=100,
+        showCompleted=False,
+        pageToken=nextPageToken
+        ).execute()
+        lstItems= response.get('items')
+        nextPageToken=response.get('nextPageToken')
+    print(pd.DataFrame(lstItems))
+    data = pd.DataFrame(lstItems)
+    print(data.get('title','status')) 
+
+    a = str(data.get('title'))
+
+
+    account_sid = c
+    auth_token = d
+
+    client = Client(account_sid, auth_token)
+
+    client.messages.create(
+        to=f,
+        from_="+1 443 903 2548",
+        body= a
+    )
+
+schedule.every(5).hours.do(finaltest)
+
+while 1: 
+    schedule.run_pending()
+    time.sleep(1)
